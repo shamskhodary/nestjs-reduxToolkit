@@ -7,7 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService {
   constructor(private jwt: JwtService, private usersService: UsersService) {}
-  async signup(dto: UserDto): Promise<string> {
+  async signup(dto: UserDto): Promise<object> {
     const hash = await this.hashPassword(dto.password);
 
     try {
@@ -19,7 +19,7 @@ export class AuthService {
       newUser.password = '';
       const token = await this.generateToken(newUser.id, newUser.email);
 
-      return token;
+      return { data: newUser, token: token };
     } catch (error) {
       throw new Error(error);
     }
