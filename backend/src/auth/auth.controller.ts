@@ -15,6 +15,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @UseGuards(DoesUserExist)
+  @HttpCode(HttpStatus.OK)
   @Post('signup')
   signup(@Body() dto: UserDto) {
     return this.authService.signup(dto);

@@ -1,0 +1,16 @@
+.blog-container {
+  margin-top: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.post {
+  width: 40%;
+
+}
+
+.post img {
+  width: 100%;
+}

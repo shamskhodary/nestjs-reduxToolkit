@@ -1,4 +1,5 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
+import { toast } from 'react-toastify'
 import JwtService from './JwtService'
 
 export default class axiosConfig {
@@ -12,6 +13,12 @@ export default class axiosConfig {
     this.axios.defaults.headers.Authorization = `Bearer ${JwtService.get()}`
     this.axios.defaults.headers.common['Content-type'] = 'application/json'
     this.axios.defaults.headers.common.Accept = 'application/json'
+    this.axios.interceptors.response.use((response) => response, (err) => {
+      if (err.response?.status !== 401 && err.config.url !== '/users/me ') {
+        toast.error(err?.response?.data?.message)
+      }
+      return Promise.reject(err)
+    })
   }
 
   public static get(route:string, config?:AxiosRequestConfig)

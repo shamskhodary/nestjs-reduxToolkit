@@ -17,7 +17,7 @@ header .title h1 {
   letter-spacing: 2px;
 }
 
-header ul {
+header .list {
   padding: 1.5rem 0;
   width: 100%;
   display: flex;
@@ -27,7 +27,9 @@ header ul {
   border: 1px solid black;
 }
 
-header ul li {
-  list-style: none;
+header .list a {
+ text-decoration: none;
+  color: #000;
   cursor: pointer;
 }
+

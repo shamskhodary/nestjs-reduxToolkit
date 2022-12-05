@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import moment from 'moment'
+import './index.css'
 import IPostProps from '../../interfaces/props/IPostsProp'
 
 const Blog:FC<IPostProps> = ({ post }) => (
