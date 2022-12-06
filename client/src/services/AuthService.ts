@@ -30,8 +30,9 @@ const login = async (dispatch:Function, credentials: object)
   }
 }
 
-const logout = ():any => {
+const logout = ():object => {
   JwtService.clear()
+  return { message: 'User is Logged out' }
 }
 
 export {
