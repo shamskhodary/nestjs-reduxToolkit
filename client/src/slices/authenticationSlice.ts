@@ -4,6 +4,7 @@ import { IUserState } from '../interfaces/IUser'
 const initialState: IUserState = {
   user: null,
   isLogged: false,
+  error: '',
 }
 export const authenticationSlice = createSlice({
   name: 'authentication',
@@ -21,9 +22,10 @@ export const authenticationSlice = createSlice({
       state.user = action.payload
       state.isLogged = true
     },
-    removeUser: (state) => {
+    removeUser: (state, action) => {
       state.user = null
       state.isLogged = false
+      state.error = action.payload
     },
   },
 })

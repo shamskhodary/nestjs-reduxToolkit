@@ -11,10 +11,8 @@ const Navbar:FC = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { isLogged } = useSelector((state:RootState) => state.authenticationSlice)
-
   const handleLogout = ():void => {
-    logout()
-    dispatch(removeUser())
+    dispatch(removeUser(logout()))
     navigate('/')
   }
 

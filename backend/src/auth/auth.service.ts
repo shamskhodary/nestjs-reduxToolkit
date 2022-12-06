@@ -19,7 +19,11 @@ export class AuthService {
       newUser.password = '';
       const token = await this.generateToken(newUser.id, newUser.email);
 
-      return { data: newUser, token: token };
+      return {
+        data: newUser,
+        token: token,
+        message: 'User is signed up successfully',
+      };
     } catch (error) {
       throw new Error(error);
     }
@@ -34,7 +38,7 @@ export class AuthService {
     try {
       const token = await this.generateToken(user.id, user.email);
       user.password = '';
-      return { user, token, message: 'authentication succeeded' };
+      return { user, token, message: 'User is logged in successfully' };
     } catch (error) {
       throw new Error(error);
     }
