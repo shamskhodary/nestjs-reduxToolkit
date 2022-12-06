@@ -23,7 +23,7 @@ const App:FC = () => {
     if (response.statusText === 'OK') {
       dispatch(userAuthenticated(response.data))
     } else {
-      throw new Error('')
+      throw new Error('unauthorized')
     }
   }
 

@@ -6,11 +6,11 @@ import { RootState } from '../..'
 import Navbar from '../../components/Navbar'
 
 const Home:FC = () => {
-  const { isLogged, user } = useSelector((state:RootState) => state.authenticationSlice)
+  const { isLogged } = useSelector((state:RootState) => state.authenticationSlice)
 
   return (
     <div className="homepage">
-      {isLogged ? <ApplicationBar image={user?.image} /> : <Navbar />}
+      {isLogged ? <ApplicationBar /> : <Navbar />}
       <BlogContainer />
     </div>
   )

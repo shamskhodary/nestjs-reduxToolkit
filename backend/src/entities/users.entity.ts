@@ -1,4 +1,5 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
+import { Post } from './posts.entity';
 
 @Table
 export class User extends Model<User> {
@@ -34,4 +35,14 @@ export class User extends Model<User> {
     allowNull: false,
   })
   gender: string;
+
+  @Column({
+    type: DataType.TEXT,
+    defaultValue: 'https://i.stack.imgur.com/l60Hf.png',
+    allowNull: true,
+  })
+  image: string;
+
+  @HasMany(() => Post)
+  posts: Post[];
 }

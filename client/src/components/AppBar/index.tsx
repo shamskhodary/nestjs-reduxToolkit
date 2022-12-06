@@ -2,7 +2,7 @@ import {
   AppBar, Avatar, Box, IconButton, Toolbar, Typography,
 } from '@mui/material'
 import { FC } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import {
   Home, Search, Bookmarks, Article,
@@ -11,10 +11,13 @@ import { logout } from '../../services/AuthService'
 import { removeUser } from '../../slices/authenticationSlice'
 
 import './index.css'
+import { RootState } from '../..'
 
-const ApplicationBar:FC<{image: string | undefined}> = ({ image }) => {
+const ApplicationBar:FC = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { user } = useSelector((state:RootState) => state.authenticationSlice)
+
   const handleLogout = ():void => {
     dispatch(removeUser(logout()))
     navigate('/')
@@ -68,7 +71,7 @@ const ApplicationBar:FC<{image: string | undefined}> = ({ image }) => {
           </div>
 
           <div className="home-profile">
-            <Avatar src={image} sx={{ cursor: 'pointer' }} />
+            <Avatar src={user?.image} sx={{ cursor: 'pointer' }} />
             <Typography
               sx={{ color: 'black' }}
               onClick={handleLogout}
