@@ -12,4 +12,9 @@ export default interface IPosts {
   image: string
   createdAt: string
   user: IUser
+  userId: number
+}
+
+export interface IPostState {
+  posts: IPosts | null
 }

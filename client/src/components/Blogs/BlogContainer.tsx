@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react'
 import IPosts from '../../interfaces/IPost'
 import axiosConfig from '../../services/ApiService'
-import Blog from './Blog'
+import BlogLists from './BlogLists'
 
 const BlogContainer:FC = () => {
   const [data, setData] = useState<IPosts[]>([])
@@ -15,7 +15,7 @@ const BlogContainer:FC = () => {
   }, [])
   return (
     <div className="blog-container">
-      {data && data.map((post:any) => <Blog post={post} key={post.id} />)}
+      {data && data.map((post:any) => <BlogLists post={post} key={post.id} />)}
     </div>
   )
 }
