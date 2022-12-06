@@ -1,44 +1,15 @@
-import { Typography } from '@mui/material'
+import { Typography, Box } from '@mui/material'
 import { FC } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
-import { RootState } from '../..'
-import { logout } from '../../services/AuthService'
-import { removeUser } from '../../slices/authenticationSlice'
-import './index.css'
+import { Link } from 'react-router-dom'
 
-const Navbar:FC = () => {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const { isLogged } = useSelector((state:RootState) => state.authenticationSlice)
-  const handleLogout = ():void => {
-    dispatch(removeUser(logout()))
-    navigate('/')
-  }
+const Navbar:FC = () => (
+  <header>
+    <Box className="list">
+      <Link to="/signup"><Typography>Signup</Typography></Link>
+      <Link to="/login"><Typography>Login</Typography></Link>
+    </Box>
 
-  return (
-    <header>
-      <div className="title">
-        <h1>Train of Thoughts</h1>
-      </div>
-      <div className="list">
-        <Link to="/"><Typography>Home</Typography></Link>
-        <Typography>Blogs</Typography>
-        {isLogged ? (
-          <Typography
-            onClick={handleLogout}
-          >
-            Logout
-          </Typography>
-        ) : (
-          <>
-            <Link to="/signup"><Typography>Signup</Typography></Link>
-            <Link to="/login"><Typography>Login</Typography></Link>
-          </>
-        )}
-      </div>
-    </header>
-  )
-}
+  </header>
+)
 
 export default Navbar

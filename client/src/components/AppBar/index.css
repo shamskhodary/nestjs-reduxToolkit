@@ -4,19 +4,6 @@ header {
   width: 100%;
 }
 
-header .title {
-  width: 100%;
-  background-color: antiquewhite;
-  text-align: center;
-  padding: 1.5rem 0;
-}
-
-header .title h1 {
-  font-family: 'Merriweather';
-  font-size: 2.2rem;
-  letter-spacing: 2px;
-}
-
 header .list {
   padding: 1.5rem 0;
   width: 100%;
@@ -33,3 +20,24 @@ header .list a {
   cursor: pointer;
 }
 
+.logo {
+  width: 90%;
+  cursor: pointer;
+}
+
+.logo img {
+  width: 100%;
+}
+
+.home-icons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  height: 45%;
+}
+
+
+.home-icons button {
+  color: rgba(41, 41, 41, 1);
+}
