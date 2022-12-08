@@ -1,19 +1,20 @@
 import {
   AppBar, Avatar, Box, IconButton, Toolbar, Typography,
 } from '@mui/material'
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import {
-  Home, Search, Bookmarks, Article,
+  Home, Search, Bookmarks, Article, Create,
 } from '@mui/icons-material'
 import { logout } from '../../services/AuthService'
 import { removeUser } from '../../slices/authenticationSlice'
-
-import './index.css'
 import { RootState } from '../..'
+import './index.css'
+import AddPost from '../AddPost'
 
 const ApplicationBar:FC = () => {
+  const [open, setOpen] = useState<boolean>(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { user } = useSelector((state:RootState) => state.authenticationSlice)
@@ -22,6 +23,9 @@ const ApplicationBar:FC = () => {
     dispatch(removeUser(logout()))
     navigate('/')
   }
+
+  const handleOpen = ():void => setOpen(true)
+  const handleClose = ():void => setOpen(false)
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -68,7 +72,11 @@ const ApplicationBar:FC = () => {
               {' '}
               <Search />
             </IconButton>
+            <IconButton onClick={handleOpen}>
+              <Create />
+            </IconButton>
           </div>
+          <AddPost open={open} handleClose={handleClose} setOpen={setOpen} />
 
           <div className="home-profile">
             <Avatar src={user?.image} sx={{ cursor: 'pointer' }} />

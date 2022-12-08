@@ -6,6 +6,7 @@ import { useFormik } from 'formik'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { login } from '../../services/AuthService'
+import { logUser } from '../../slices/authenticationSlice'
 
 const Login:FC = () => {
   const navigate = useNavigate()
@@ -19,8 +20,9 @@ const Login:FC = () => {
   })
 
   const handleSubmit = async (values:{email: string, password: string}):Promise<void> => {
-    const userInfo = await login(dispatch, values)
+    const userInfo = await login(values)
     if (userInfo.isLogged === true) {
+      dispatch(logUser(userInfo.data.user))
       navigate('/')
     } else {
       toast.error(userInfo.err.response.data.message)

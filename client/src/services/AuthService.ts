@@ -1,32 +1,29 @@
 import axiosConfig from './ApiService'
 import JwtService from './JwtService'
-import { logUser, signUser } from '../slices/authenticationSlice'
 
-const register = async (dispatch:Function, credentials:object)
-:Promise<{isLogged: boolean, err:any } > => {
+const register = async (credentials:object)
+:Promise<{isLogged: boolean, err:any, data: any } > => {
   try {
     const response = await axiosConfig.post('/api/v1/auth/signup', credentials)
     if (response.statusText === 'OK') {
       JwtService.set(response.data.token)
-      dispatch(signUser(response.data))
     }
-    return { isLogged: true, err: null }
+    return { isLogged: true, err: null, data: response.data }
   } catch (error:any) {
-    return { isLogged: false, err: error }
+    return { isLogged: false, err: error, data: {} }
   }
 }
 
-const login = async (dispatch:Function, credentials: object)
-:Promise<{isLogged: boolean, err:any } > => {
+const login = async (credentials: object)
+:Promise<{isLogged: boolean, err:any, data: any } > => {
   try {
     const response = await axiosConfig.post('/api/v1/auth/login', credentials)
     if (response.statusText === 'OK') {
       JwtService.set(response.data.token)
-      dispatch(logUser(response.data))
     }
-    return { isLogged: true, err: null }
+    return { isLogged: true, err: null, data: response.data }
   } catch (error:any) {
-    return { isLogged: false, err: error }
+    return { isLogged: false, err: error, data: {} }
   }
 }
 

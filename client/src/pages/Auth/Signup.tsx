@@ -8,6 +8,7 @@ import {
   Button, TextField, InputLabel, Select, MenuItem, SelectChangeEvent,
 } from '@mui/material'
 import { register } from '../../services/AuthService'
+import { signUser } from '../../slices/authenticationSlice'
 
 const Signup:FC = () => {
   const navigate = useNavigate()
@@ -23,8 +24,9 @@ const Signup:FC = () => {
   })
 
   const handleSubmit = async (values:object):Promise<void> => {
-    const userInfo = await register(dispatch, values)
+    const userInfo = await register(values)
     if (userInfo.isLogged === true) {
+      dispatch(signUser(userInfo.data))
       navigate('/')
     } else {
       toast(userInfo.err.response.data.message)

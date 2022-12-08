@@ -15,7 +15,7 @@ const BlogDetails:FC = () => {
   const { id } = useParams()
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { posts } = useSelector((state:RootState) => state.blogsSlice)
+  const { one } = useSelector((state:RootState) => state.blogSlice)
 
   useEffect(() => {
     const singlePost = async ():Promise<void> => {
@@ -29,7 +29,7 @@ const BlogDetails:FC = () => {
       }
     }
     singlePost()
-  }, [id])
+  }, [dispatch])
   return (
     <div>
       <Box>
@@ -37,16 +37,16 @@ const BlogDetails:FC = () => {
           <Avatar src="img">H</Avatar>
         </Stack>
         <div>
-          <Typography onClick={() => navigate(`users/${posts?.userId}`)}>
-            {posts?.user.username}
+          <Typography onClick={() => navigate(`users/${one?.userId}`)}>
+            {one?.user.username}
           </Typography>
-          <span>{moment(posts?.createdAt).format('YYYY/MM/DD')}</span>
+          <span>{moment(one?.createdAt).format('YYYY/MM/DD')}</span>
         </div>
 
         <div className="details">
-          <Typography variant="h1">{posts?.title}</Typography>
-          <img src={posts?.image} alt="postImage" />
-          <Typography variant="body2">{posts?.content}</Typography>
+          <Typography variant="h1">{one?.title}</Typography>
+          <img src={one?.image} alt="postImage" />
+          <Typography variant="body2">{one?.content}</Typography>
         </div>
         <div className="icons">
           <SignLanguageOutlined />

@@ -3,6 +3,8 @@
   email: string
   username: string
   gender: string
+  image: string
+  token: string
 }
 
 export default interface IPosts {
@@ -16,5 +18,6 @@ export default interface IPosts {
 }
 
 export interface IPostState {
-  posts: IPosts | null
+  posts: IPosts[] | null
+  one: IPosts | null
 }
