@@ -27,15 +27,6 @@ export class PostController {
     return posts;
   }
 
-  @Get(':id')
-  async OnePost(@Param('id', ParseIntPipe) id: number): Promise<PostEntity> {
-    const post = await this.postService.findOnePost(id);
-
-    if (!post) throw new NotFoundException(`This post does not exist`);
-
-    return post;
-  }
-
   @UseGuards(AuthGuard('jwt'))
   @Post()
   async addPost(
@@ -45,6 +36,15 @@ export class PostController {
     const added = await this.postService.createPost(post, req.user.id);
 
     return { data: added, message: 'post added successfully' };
+  }
+
+  @Get(':id')
+  async OnePost(@Param('id', ParseIntPipe) id: number): Promise<PostEntity> {
+    const post = await this.postService.findOnePost(id);
+
+    if (!post) throw new NotFoundException(`This post does not exist`);
+
+    return post;
   }
 
   @UseGuards(AuthGuard('jwt'))

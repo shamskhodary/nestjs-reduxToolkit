@@ -41,3 +41,8 @@ header .list a {
 .home-icons button {
   color: rgba(41, 41, 41, 1);
 }
+
+.inputs {
+  height: 80%;
+}
+

@@ -6,7 +6,7 @@ const initialState: IUserState = {
   isLogged: false,
   error: '',
 }
-export const authenticationSlice = createSlice({
+const authenticationSlice = createSlice({
   name: 'authentication',
   initialState,
   reducers: {

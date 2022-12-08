@@ -1,21 +1,35 @@
-import { FC, useEffect, useState } from 'react'
-import IPosts from '../../interfaces/IPost'
+import { FC, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../..'
 import axiosConfig from '../../services/ApiService'
+import { getAllPosts } from '../../slices/blogsSlice'
+import { loadingData } from '../../slices/loadingSlice'
 import BlogLists from './BlogLists'
 
 const BlogContainer:FC = () => {
-  const [data, setData] = useState<IPosts[]>([])
+  const dispatch = useDispatch()
+  const { posts } = useSelector((state:RootState) => state.blogSlice)
+  //! fix re-rendering
 
   const handlePosts = async ():Promise<void> => {
-    const posts = await axiosConfig.get('/api/v1/posts')
-    if (posts && posts.data) setData(posts.data)
+    const response = await axiosConfig.get('/api/v1/posts')
+    if (response.data) {
+      dispatch(getAllPosts(response.data))
+      dispatch(loadingData())
+    }
   }
   useEffect(() => {
     handlePosts()
-  }, [])
+  }, [dispatch])
+
   return (
     <div className="blog-container">
-      {data && data.map((post:any) => <BlogLists post={post} key={post.id} />)}
+      {posts && posts.map((post:any) => (
+        <BlogLists
+          post={post}
+          key={post.id}
+        />
+      ))}
     </div>
   )
 }

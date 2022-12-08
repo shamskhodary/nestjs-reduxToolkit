@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { FC, useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
@@ -17,19 +17,25 @@ import Bookmarks from './pages/Bookmarks'
 
 const App:FC = () => {
   const dispatch = useDispatch()
-
-  const auth = async ():Promise<any> => {
-    const response = await axiosConfig.get('/api/v1/users/me')
-    if (response.statusText === 'OK') {
-      dispatch(userAuthenticated(response.data))
-    } else {
-      throw new Error('unauthorized')
-    }
-  }
+  const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
+    const auth = async ():Promise<void> => {
+      const response = await axiosConfig.get('/api/v1/users/me')
+      if (response.data) {
+        dispatch(userAuthenticated(response.data))
+        axiosConfig.setHeaders()
+        setLoading(true)
+        console.log(response.data)
+      } else {
+        throw new Error('unauthorized')
+      }
+      return response.data
+    }
     auth()
-  }, [dispatch])
+  }, [dispatch, loading])
+
+  console.log(loading)
 
   const router = createBrowserRouter([
     {
