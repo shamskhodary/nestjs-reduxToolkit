@@ -12,7 +12,9 @@ export class PostService {
     return await this.postRepository.create<Post>({ ...post, userId });
   }
 
-  async findAllPosts(): Promise<Post[]> {
+  async findAllPosts(userId: number): Promise<Post[]> {
+    const whereObject: { userId?: number } = {};
+    if (userId) whereObject['userId'] = userId;
     return await this.postRepository.findAll({
       include: [
         {
@@ -22,6 +24,7 @@ export class PostService {
           },
         },
       ],
+      where: whereObject,
     });
   }
 

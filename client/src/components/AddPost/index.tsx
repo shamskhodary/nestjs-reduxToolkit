@@ -4,12 +4,14 @@ import {
   Button, Modal, TextField, Typography,
 } from '@mui/material'
 import { useFormik } from 'formik'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 import IAddPost from '../../interfaces/IAddPost'
 import postSchema from '../../validation/addPostSchema'
 import axiosConfig from '../../services/ApiService'
 import { addPost } from '../../slices/blogsSlice'
+import IAddPostProps from '../../interfaces/props/IAddPostProps'
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -26,10 +28,28 @@ const style = {
   pb: 3,
 }
 
-const AddPost:FC<{open: boolean, handleClose: () => void, setOpen: Function}> = (
-  { open, handleClose, setOpen },
+const AddPost:FC<IAddPostProps> = (
+  {
+    open, handleClose, setOpen, setUpdated,
+  },
 ) => {
   const dispatch = useDispatch()
+  const { isLogged } = useSelector((state:any) => state.authenticationSlice)
+  const navigate = useNavigate()
+
+  const handleAddPosts = async (values:IAddPost):Promise<void> => {
+    try {
+      const response = await axiosConfig.post('/api/v1/posts', { ...values })
+      if (response) {
+        dispatch(addPost(response.data.data))
+        setUpdated(true)
+        toast.success(response.data.message)
+        setOpen(false)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const initialValues = {
     title: '',
@@ -40,17 +60,12 @@ const AddPost:FC<{open: boolean, handleClose: () => void, setOpen: Function}> = 
   const formik = useFormik({
     initialValues,
     validationSchema: postSchema,
-    onSubmit: async (values:IAddPost) => {
-      const response = await axiosConfig.post('/api/v1/posts', { ...values })
-      try {
-        if (response.statusText === 'Created') {
-          setOpen(false)
-          formik.resetForm()
-          dispatch(addPost(response.data.data))
-          toast.success(response.data.message)
-        }
-      } catch (error) {
-        console.log(error)
+    onSubmit: (values, { resetForm }) => {
+      if (isLogged) {
+        handleAddPosts(values)
+        resetForm()
+      } else {
+        navigate('/signup')
       }
     },
   })

@@ -1,27 +1,18 @@
 import { FC } from 'react'
-import * as yup from 'yup'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useFormik } from 'formik'
 import { toast } from 'react-toastify'
 import {
-  Button, TextField, InputLabel, Select, MenuItem, SelectChangeEvent,
+  Button, TextField, InputLabel, Select, MenuItem, SelectChangeEvent, Typography,
 } from '@mui/material'
 import { register } from '../../services/AuthService'
 import { signUser } from '../../slices/authenticationSlice'
+import validationSchema from '../../validation/signupSchema'
 
 const Signup:FC = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
-  const validationSchema = yup.object({
-    username: yup.string().min(3).required('Username is required'),
-    email: yup.string().email('Invalid email').required('Email is required'),
-    password: yup.string()
-      .min(6, 'Password should be of minimum 6 characters length')
-      .required('Password is required'),
-    gender: yup.string().required('Gender is required'),
-  })
 
   const handleSubmit = async (values:object):Promise<void> => {
     const userInfo = await register(values)
@@ -112,6 +103,11 @@ const Signup:FC = () => {
           </MenuItem>
         </Select>
         <br />
+        <Typography>
+          Already have an account?
+          {' '}
+          <Link to="/login">Log in</Link>
+        </Typography>
         <Button variant="outlined" type="submit">create an account</Button>
 
       </form>

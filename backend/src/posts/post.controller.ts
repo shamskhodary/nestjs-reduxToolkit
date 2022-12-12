@@ -5,24 +5,25 @@ import {
   Post,
   Delete,
   Body,
-  Request,
   Param,
   Put,
   ParseIntPipe,
   NotFoundException,
+  Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { postDto } from 'src/dto/post.dto';
 import { Post as PostEntity } from 'src/entities/posts.entity';
 import { PostService } from './post.service';
+import { getUser } from 'src/auth/decorator/get-user.decorator';
 
 @Controller('posts')
 export class PostController {
   constructor(private postService: PostService) {}
 
   @Get()
-  async allPosts() {
-    const posts = await this.postService.findAllPosts();
+  async allPosts(@Query('userId') userId?: number) {
+    const posts = await this.postService.findAllPosts(userId);
 
     return posts;
   }
@@ -31,9 +32,9 @@ export class PostController {
   @Post()
   async addPost(
     @Body() post: postDto,
-    @Request() req,
+    @getUser('id') userId: number,
   ): Promise<{ data: PostEntity; message: string }> {
-    const added = await this.postService.createPost(post, req.user.id);
+    const added = await this.postService.createPost(post, userId);
 
     return { data: added, message: 'post added successfully' };
   }
@@ -49,8 +50,11 @@ export class PostController {
 
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
-  async removePost(@Param('id', ParseIntPipe) id: number, @Request() req) {
-    const isDeleted = await this.postService.deletePost(id, req.user.id);
+  async removePost(
+    @Param('id', ParseIntPipe) id: number,
+    @getUser('id') userId: number,
+  ) {
+    const isDeleted = await this.postService.deletePost(id, userId);
 
     if (!isDeleted) throw new NotFoundException('This post does not exist');
 
@@ -62,9 +66,9 @@ export class PostController {
   async editPost(
     @Param('postId', ParseIntPipe) id: number,
     @Body() post: postDto,
-    @Request() req,
+    @getUser('id') userId: number,
   ): Promise<PostEntity> {
-    const updated = await this.postService.updatePost(id, req.user.id, post);
+    const updated = await this.postService.updatePost(id, userId, post);
 
     if (!updated) throw new NotFoundException('Post does not exist!');
 
