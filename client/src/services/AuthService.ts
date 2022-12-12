@@ -7,6 +7,7 @@ const register = async (credentials:object)
     const response = await axiosConfig.post('/api/v1/auth/signup', credentials)
     if (response.statusText === 'OK') {
       JwtService.set(response.data.token)
+      axiosConfig.setHeaders()
     }
     return { isLogged: true, err: null, data: response.data }
   } catch (error:any) {
@@ -20,6 +21,7 @@ const login = async (credentials: object)
     const response = await axiosConfig.post('/api/v1/auth/login', credentials)
     if (response.statusText === 'OK') {
       JwtService.set(response.data.token)
+      axiosConfig.setHeaders()
     }
     return { isLogged: true, err: null, data: response.data }
   } catch (error:any) {

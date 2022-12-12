@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
@@ -10,37 +10,33 @@ import Signup from './pages/Auth/Signup'
 import axiosConfig from './services/ApiService'
 import BlogDetails from './components/BlogDetails'
 import Profile from './pages/Profile'
-import SearchResults from './pages/SearchResults'
 import 'react-toastify/dist/ReactToastify.css'
 import './App.css'
-import Bookmarks from './pages/Bookmarks'
 
 const App:FC = () => {
   const dispatch = useDispatch()
-  const [loading, setLoading] = useState<boolean>(false)
+  const [updated, setUpdated] = useState(false)
+  const [deleted, setDeleted] = useState<boolean>(false)
 
   useEffect(() => {
     const auth = async ():Promise<void> => {
       const response = await axiosConfig.get('/api/v1/users/me')
       if (response.data) {
         dispatch(userAuthenticated(response.data))
-        axiosConfig.setHeaders()
-        setLoading(true)
-        console.log(response.data)
-      } else {
-        throw new Error('unauthorized')
       }
-      return response.data
     }
     auth()
-  }, [dispatch, loading])
-
-  console.log(loading)
+  }, [dispatch])
 
   const router = createBrowserRouter([
     {
       path: '/',
-      element: <Home />,
+      element: <Home
+        updated={updated}
+        setUpdated={setUpdated}
+        setDeleted={setDeleted}
+        deleted={deleted}
+      />,
     },
     {
       path: '/signup',
@@ -52,19 +48,11 @@ const App:FC = () => {
     },
     {
       path: '/users/:id',
-      element: <Profile />,
+      element: <Profile updated={updated} setUpdated={setUpdated} setDeleted={setDeleted} />,
     },
     {
       path: '/posts/:id',
       element: <BlogDetails />,
-    },
-    {
-      path: '/search',
-      element: <SearchResults />,
-    },
-    {
-      path: '/bookmarks',
-      element: <Bookmarks />,
     },
     {
       path: '*',

@@ -5,15 +5,16 @@ import { FC, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import {
-  Home, Search, Bookmarks, Article, Create,
+  Home, Article, Create,
 } from '@mui/icons-material'
 import { logout } from '../../services/AuthService'
 import { removeUser } from '../../slices/authenticationSlice'
 import { RootState } from '../..'
 import './index.css'
 import AddPost from '../AddPost'
+import IAppBar from '../../interfaces/IAppBar'
 
-const ApplicationBar:FC = () => {
+const ApplicationBar:FC<IAppBar> = ({ setUpdated }) => {
   const [open, setOpen] = useState<boolean>(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -59,24 +60,20 @@ const ApplicationBar:FC = () => {
             <IconButton onClick={() => navigate('/')}>
               <Home />
             </IconButton>
-            <IconButton>
+            <IconButton onClick={() => navigate(`/users/${user?.id}`)}>
               {' '}
               <Article />
-            </IconButton>
-            <IconButton onClick={() => navigate('/bookmarks')}>
-              {' '}
-              <Bookmarks />
-            </IconButton>
-
-            <IconButton onClick={() => navigate('/search')}>
-              {' '}
-              <Search />
             </IconButton>
             <IconButton onClick={handleOpen}>
               <Create />
             </IconButton>
           </div>
-          <AddPost open={open} handleClose={handleClose} setOpen={setOpen} />
+          <AddPost
+            open={open}
+            handleClose={handleClose}
+            setOpen={setOpen}
+            setUpdated={setUpdated}
+          />
 
           <div className="home-profile">
             <Avatar src={user?.image} sx={{ cursor: 'pointer' }} />

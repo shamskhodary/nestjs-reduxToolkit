@@ -27,11 +27,15 @@ const authenticationSlice = createSlice({
       state.isLogged = false
       state.error = action.payload
     },
+    getUser: (state, action) => {
+      state.user = action.payload
+      state.isLogged = true
+    },
   },
 })
 
 export const {
-  userAuthenticated, signUser, logUser, removeUser,
+  userAuthenticated, signUser, logUser, removeUser, getUser,
 } = authenticationSlice.actions
 
 export default authenticationSlice.reducer

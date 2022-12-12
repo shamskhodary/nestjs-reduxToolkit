@@ -7,18 +7,19 @@ export default class axiosConfig {
 
   public static init():void {
     this.axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
-  }
-
-  public static setHeaders():void {
-    this.axios.defaults.headers.Authorization = `Bearer ${JwtService.get()}`
-    this.axios.defaults.headers.common['Content-type'] = 'application/json'
-    this.axios.defaults.headers.common.Accept = 'application/json'
     this.axios.interceptors.response.use((response) => response, (err) => {
-      if (err.response?.status !== 401 && err.config.url !== '/users/me ') {
+      if (err?.response?.status >= 400 && err?.response?.status < 500
+        && err?.response?.status !== 401 && err.config.url !== '/api/v1/users/me') {
         toast.error(err?.response?.data?.message)
       }
       return Promise.reject(err)
     })
+  }
+
+  public static setHeaders():void {
+    this.axios.defaults.headers.Authorization = `Bearer ${JwtService.get()}`
+    this.axios.defaults.headers.common['Content-Type'] = 'application/json'
+    this.axios.defaults.headers.common.Accept = 'application/json'
   }
 
   public static get(route:string, config?:AxiosRequestConfig)

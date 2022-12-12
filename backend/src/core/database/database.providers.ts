@@ -15,11 +15,11 @@ export const databaseProvider = [
           config = databaseConfig.development;
           break;
         case TEST:
-          config: databaseConfig.test;
+          config = databaseConfig.test;
           break;
 
         case PRODUCTION:
-          config: databaseConfig.production;
+          config = databaseConfig.production;
           break;
 
         default:

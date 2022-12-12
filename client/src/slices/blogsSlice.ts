@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { IPostState } from '../interfaces/IPost'
-//! alert
+
 const initialState: IPostState = {
   posts: null,
   one: null,
@@ -21,15 +21,15 @@ const blogSlice = createSlice({
       state.posts?.push(action.payload)
     },
     editPost: () => {},
-    // deletePost: (state, action) => {
-    //   const deleted = state.posts?.filter((post:any) => post.id !== action.payload.id)
-    //   state.posts = deleted
-    // },
+    deletePost: (state, action) => {
+      state.posts?.splice(action.payload, 1)
+    }
+    ,
   },
 })
 
 export const {
-  addPost, getOnePost, editPost, getAllPosts,
+  addPost, getOnePost, editPost, getAllPosts, deletePost,
 } = blogSlice.actions
 
 export default blogSlice.reducer

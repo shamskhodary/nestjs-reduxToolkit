@@ -3,13 +3,14 @@ import { PassportStrategy } from '@nestjs/passport';
 
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-  constructor(private userService: UsersService) {
+export class JwtStrategy extends PassportStrategy(Strategy) {
+  constructor(private userService: UsersService, configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: process.env.JWTKEY,
+      secretOrKey: configService.get('JWTKEY'),
     });
   }
 
@@ -20,7 +21,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       throw new UnauthorizedException(
         'You are not authorized to perform this operation',
       );
-    delete user.password;
+
     return user;
   }
 }

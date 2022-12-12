@@ -7,6 +7,7 @@ import { SignLanguageOutlined, ModeComment, BookmarkAdd } from '@mui/icons-mater
 import {
   Avatar, Box, Stack, Typography,
 } from '@mui/material'
+import { toast } from 'react-toastify'
 import axiosConfig from '../../services/ApiService'
 import { getOnePost } from '../../slices/blogsSlice'
 import { RootState } from '../../index'
@@ -24,8 +25,8 @@ const BlogDetails:FC = () => {
         if (response.status === 200) {
           dispatch(getOnePost(response.data))
         }
-      } catch (error) {
-        console.log(error)
+      } catch (err:any) {
+        toast.error(err)
       }
     }
     singlePost()

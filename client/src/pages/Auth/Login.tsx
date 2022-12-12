@@ -1,23 +1,16 @@
 import { FC } from 'react'
-import { useNavigate } from 'react-router-dom'
-import * as yup from 'yup'
-import { TextField, Button } from '@mui/material'
+import { Link, useNavigate } from 'react-router-dom'
+import { TextField, Button, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { login } from '../../services/AuthService'
 import { logUser } from '../../slices/authenticationSlice'
+import validationSchema from '../../validation/loginSchema'
 
 const Login:FC = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
-  const validationSchema = yup.object({
-    email: yup.string().email('Invalid email').required('Email is required'),
-    password: yup.string()
-      .min(6, 'Password should be of minimum 6 characters length')
-      .required('Password is required'),
-  })
 
   const handleSubmit = async (values:{email: string, password: string}):Promise<void> => {
     const userInfo = await login(values)
@@ -64,8 +57,12 @@ const Login:FC = () => {
           helperText={formik.touched.password && formik.errors.password}
           sx={{ display: 'block', margin: '15px 0' }}
         />
-
         <Button variant="outlined" type="submit">Log in</Button>
+        <Typography>
+          you are new here?
+          {' '}
+          <Link to="/signup">Sign up now</Link>
+        </Typography>
       </form>
     </div>
   )
